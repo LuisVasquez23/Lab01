@@ -1,0 +1,24 @@
+.paginate_button{
+    padding: 10px;
+    background: #637A9F;
+    color:white;
+    margin:0 2px;
+    border-radius:2px;
+    text-decoration: none;
+}
+
+.paginate_button:hover{
+    background: #1F2544;
+}
+
+.dataTables_paginate{
+    padding:10px 0;
+}
+
+.current{
+    background: #1F2544;
+}
+
+table.dataTable{
+   box-shadow: 2px 2px 10px #B4B4B8;
+}

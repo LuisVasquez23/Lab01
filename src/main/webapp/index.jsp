@@ -1,11 +1,31 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Lab01</title>
+    
+   <jsp:include page="./layout/css.jsp" />
+    
+  </head>
+  <body>
+      
+    <jsp:include page="./layout/navbar.jsp" />
+    
+    <div class="container pt-4">
+        <h1>Welcome </h1>
+    </div>
+    
+    
+    <jsp:include page="./layout/js.jsp" />
+   
+    <script>
+        setTimeout(()=>{
+            hiddeLoader();
+        },1000);
+    </script>
+    
+  </body>
 </html>
