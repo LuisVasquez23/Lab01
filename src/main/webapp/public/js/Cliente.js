@@ -1,6 +1,12 @@
 const clienteTableId = "#clienteTable";
 const clienteTable = $(clienteTableId);
 
+// Datos del cliente
+let nombreCliente = $("#nombreCliente");
+let direccion = $("#Direccion");
+let telefono = $("#Telefono");
+let email = $("#Email");
+
 document.addEventListener("DOMContentLoaded" , ()=>{
     
     let ultimoElemento = document.querySelector(".filters").lastElementChild;
@@ -47,4 +53,117 @@ const RenderTableData = ({data})=>{
         ]).draw();
     });
     
+}
+
+$("#btnAdd").click(function(){
+    
+    if(!ValidateInputs()){
+        return;
+    }
+    
+    // Obtener los valores a enviar
+    let nombreC = nombreCliente.val();
+    let direccionC = direccion.val();
+    let telefonoC = telefono.val();
+    let emailC = email.val();
+    
+    let formData = {
+        nombre: nombreC,
+        direccion: direccionC,
+        telefono: telefonoC,
+        email: emailC
+    }
+    
+    fetch("/practica02/Instituto", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
+    })
+    .then(response => response.json()) // Convertir la respuesta a JSON
+    .then(data => {
+        if(data.length != 0){
+            Swal.fire({
+                title: '¡Agregado!',
+                text: '¡El cliente se agrego correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Cerrar'
+            });
+            return;
+        }
+         Swal.fire({
+            title: '¡Error!',
+            text: '¡Cliente duplicado!',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        });
+        
+    })
+    .then(function(){
+        GetClientes();
+        $('#addModal').modal('hide');
+    })
+    .catch(error => {
+        console.error('Error al realizar la solicitud:', error); // Manejar errores
+    });
+    
+    hiddeLoader();
+    
+});
+
+const ValidateInputs = () =>{
+    
+    let valido = false;
+    
+    if(nombreCliente.val() == ""){
+        showAlert("El nombre esta vacio","Cuidado","warning");
+        return valido;
+    }
+    
+    if(direccion.val() == ""){
+        showAlert("La direccion esta vacio","Cuidado","warning");
+        return valido;
+    }
+    
+    if(telefono.val() == ""){
+        showAlert("El telefono esta vacio","Cuidado","warning");
+        return valido;
+    }
+    
+    if(!validarTelefono(telefono.val())){
+        showAlert("El telefono no tiene el formato correcto xxxx-xxxx","Cuidado","warning");
+        return valido;
+    }
+    
+    if(email.val() == ""){
+        showAlert("El email esta vacio","Cuidado","warning");
+        return valido;
+    }
+    
+    return true;
+}
+
+function showAlert(message,title, type) {
+    Swal.fire({
+        title:title,
+        text: message,
+        icon: type,
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+    });
+}
+
+function validarTelefono(telefono) {
+    
+    // Eliminamos espacios en blanco y guiones si están presentes
+    var telefonoSinFormato = telefono.replace(/\s/g, "").replace(/-/g, "");
+    
+    // Verificamos si el número de teléfono tiene exactamente 8 dígitos
+    if (telefonoSinFormato.length === 8 && !isNaN(telefonoSinFormato)) {
+        return true;
+    } else {
+        return false;
+    }
 }

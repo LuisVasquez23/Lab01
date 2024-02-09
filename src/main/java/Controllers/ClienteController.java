@@ -37,6 +37,22 @@ public class ClienteController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        String nombre = request.getParameter("nombre");
+        
+        Cliente cliente = new Cliente();
+        
+        cliente.setNombreCliente(nombre);
+        
+        General.sendAsJson(response, General.ObjectToJson(cliente));
+        return;
+       
+//        if(clienteService){
+//            General.sendAsJson(resp, General.ObjectToJson(instituto));
+//            return;
+//        }else{
+//            General.sendAsJson(resp, "[]");
+//            return; 
+//        }
     }
 
 

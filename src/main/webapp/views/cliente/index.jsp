@@ -15,6 +15,9 @@
     
     <div class="container pt-4">
         <h1>Clientes</h1>
+        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" id="closeModal" data-bs-target="#addModal">
+            Agregar
+        </button>
         <div class="table-responsive">
             <table class="table table-striped table-bordered text-nowrap" id="clienteTable">
                 <thead>
@@ -32,7 +35,43 @@
         </div>
     </div>
     
-   
+   <!-- Modal agregar -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar cliente</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form action="/practica02/Instituto" method="POST" >
+                  <div class="mt-2 mb-3">
+                      <label class="text-muted fw-bold" for="nombreCliente">Nombre </label>
+                      <input type="text" class="form-control" placeholder="Nombre del cliente" name="nombreCliente" id="nombreCliente" required>
+                  </div>
+                  <div class="mt-2 mb-3">
+                      <label class="text-muted fw-bold" for="Direccion">Dirección </label>
+                      <input type="text" class="form-control" placeholder="Direccion" name="Direccion" id="Direccion" required>
+                  </div>
+                  <div class="mt-2 mb-3">
+                      <label class="text-muted fw-bold" for="Telefono">Telefono </label>
+                      <input type="text" class="form-control" placeholder="Telefono" name="Telefono" id="Telefono" required>
+                  </div>
+                  <div class="mt-2 mb-3">
+                      <label class="text-muted fw-bold" for="Email">Email </label>
+                      <input type="email" class="form-control" placeholder="Email" name="Email" id="Email" required>
+                  </div>
+                  <div class="mt-2 mb-3">
+                      <button type="button" id="btnAdd" class="btn btn-primary btn-sm">Agregar</button>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <jsp:include page="/layout/js.jsp" />
    
