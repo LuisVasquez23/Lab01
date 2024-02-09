@@ -18,7 +18,7 @@ public class ClienteDao {
             MySQLConnection connection = MySQLConnection.getInstance();
             Connection conn = connection.getConnection();
             
-            String query = "SELECT id, nombre , telefono, email FROM clientes;";
+            String query = "SELECT * FROM clientes;";
             
             PreparedStatement statement = conn.prepareStatement(query);
             
@@ -27,7 +27,11 @@ public class ClienteDao {
             while (resultSet.next()) {
                 Cliente cliente = new Cliente();
                 
-                
+                cliente.setClienteId(resultSet.getInt("id"));
+                cliente.setNombreCliente(resultSet.getString("nombre"));
+                cliente.setDireccion(resultSet.getString("direccion"));
+                cliente.setTelefono(resultSet.getString("telefono"));
+                cliente.setEmail(resultSet.getString("email"));
                 
                 clientes.add(cliente);
                 
