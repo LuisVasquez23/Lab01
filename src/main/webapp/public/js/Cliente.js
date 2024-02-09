@@ -17,9 +17,8 @@ document.addEventListener("DOMContentLoaded" , ()=>{
 });
 
 const GetClientes = () =>{
-    axios.get('/lab01/Cliente')
+    axios.get('/Lab01/Cliente')
     .then(function (response) {
-        console.log(response)
       RenderTableData(response);
     })
     .then(function(){
@@ -47,7 +46,7 @@ const RenderTableData = ({data})=>{
              `
                 <div class="btn-group text-center">
                     <button class="btn btn-primary">Actualizar</button>
-                    <button class="btn btn-danger">Eliminar</button>
+                    <button class="btn btn-danger" onclick="DeleteCliente(${cliente.clienteId})">Eliminar</button>
                 <div>
             `
         ]).draw();
@@ -66,20 +65,13 @@ $("#btnAdd").click(function(){
     let direccionC = direccion.val();
     let telefonoC = telefono.val();
     let emailC = email.val();
-    
-    let formData = {
-        nombre: nombreC,
-        direccion: direccionC,
-        telefono: telefonoC,
-        email: emailC
-    }
-    
-    fetch("/practica02/Instituto", {
+        
+    fetch("/Lab01/Cliente", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: formData
+        body: `nombre=${nombreC}&direccion=${direccionC}&telefono=${telefonoC}&email=${emailC}`
     })
     .then(response => response.json()) // Convertir la respuesta a JSON
     .then(data => {
@@ -102,6 +94,12 @@ $("#btnAdd").click(function(){
     })
     .then(function(){
         GetClientes();
+        
+        nombreCliente.val("");
+        direccion.val("");
+        telefono.val("");
+        email.val("");
+        
         $('#addModal').modal('hide');
     })
     .catch(error => {
@@ -166,4 +164,50 @@ function validarTelefono(telefono) {
     } else {
         return false;
     }
+}
+
+const DeleteCliente = (idCliente)=>{
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Una vez eliminado, no podrás recuperar este registro.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        fetch(`/Lab01/Cliente?id=${idCliente}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json()) 
+    .then(data => {
+        if(data.length != 0){
+             Swal.fire(
+                '¡Eliminado!',
+                'El registro ha sido eliminado.',
+                'success'
+              );
+                return;
+            }
+
+        })
+        .then(function(){
+            GetClientes();
+            $('#addModal').modal('hide');
+        })
+        .catch(error => {
+            console.error('Error al realizar la solicitud:', error); // Manejar errores
+        });
+
+        hiddeLoader();
+        
+        
+      }
+    });
 }

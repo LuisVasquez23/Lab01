@@ -48,4 +48,58 @@ public class ClienteDao {
         return clientes;   
     }
     
+    public boolean AddCliente(Cliente cliente){
+        boolean IsAdded = false;
+    
+        try {
+            
+            MySQLConnection connection = MySQLConnection.getInstance();
+            Connection conn = connection.getConnection();
+            
+            String query = "INSERT INTO `clientes` (`id`, `nombre`, `direccion`, `telefono`, `email`) VALUES (NULL, ?, ?, ?, ?);";
+            
+            PreparedStatement statement = conn.prepareStatement(query);
+            
+            statement.setString(1, cliente.getNombreCliente());
+            statement.setString(2, cliente.getDireccion());
+            statement.setString(3, cliente.getTelefono());
+            statement.setString(4, cliente.getEmail());
+            
+            int rowsAffected = statement.executeUpdate();
+            
+            if(rowsAffected > 0){
+                IsAdded = true;
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return IsAdded;
+    }
+    
+    public boolean DeleteCliente(int id){
+        boolean isDeleted = false;
+        
+        try{
+              MySQLConnection connection = MySQLConnection.getInstance();
+            Connection conn = connection.getConnection();
+            
+            String query = "DELETE FROM `clientes` WHERE id = ?;";
+            
+            PreparedStatement statement = conn.prepareStatement(query);
+            
+            statement.setInt(1, id);
+            
+            int rowsAffected = statement.executeUpdate();
+            
+            if(rowsAffected > 0){
+                isDeleted = true;
+            }
+        }catch(Exception error){
+            error.printStackTrace();
+        }
+        
+        return isDeleted;
+    }
 }
