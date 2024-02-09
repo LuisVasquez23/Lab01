@@ -32,8 +32,19 @@ const RenderTableData = ({data})=>{
     $(clienteTable).DataTable().clear().draw();
 
     data.forEach( (cliente) =>{
-                
-        console.log(cliente)
+        $(clienteTable).DataTable()
+        .row.add([
+            cliente.nombreCliente,
+            cliente.direccion,
+            cliente.telefono,
+            cliente.email,
+             `
+                <div class="btn-group text-center">
+                    <button class="btn btn-primary">Actualizar</button>
+                    <button class="btn btn-danger">Eliminar</button>
+                <div>
+            `
+        ]).draw();
     });
     
 }
