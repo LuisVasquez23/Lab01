@@ -16,7 +16,7 @@
     <div class="container pt-4">
         <h1>Clientes</h1>
         <div class="table-responsive">
-            <table class="table table-striped table-bordered text-nowrap" id="alumnoTable">
+            <table class="table table-striped table-bordered text-nowrap" id="clienteTable">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -37,7 +37,7 @@
     <jsp:include page="/layout/js.jsp" />
    
     <script>
-        initDataTable("#alumnoTable");
+        initDataTable("#clienteTable");
     </script>
     
     <script src="../../public/js/Cliente.js" type="text/javascript"></script>

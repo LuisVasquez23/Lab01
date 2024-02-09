@@ -7,10 +7,6 @@ import java.sql.ResultSet;
 
 public class PedidoDao {
     
-    Connection con;
-    PreparedStatement ps;
-    ResultSet rs;
-    int r;
-    
+
     
 }
