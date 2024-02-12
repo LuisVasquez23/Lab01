@@ -19,7 +19,7 @@
         integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" 
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         
-<script src="http://localhost:8080/practica02/public/js/index.js"></script>
+<script src="http://localhost:8080/Lab01/public/js/index.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 

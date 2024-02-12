@@ -11,9 +11,9 @@ document.addEventListener("DOMContentLoaded" , ()=>{
 });
 
 const GetClientes = () =>{
-    axios.get('/lab01/Cliente')
+    axios.get('/Lab01/Cliente')
     .then(function (response) {
-        console.log(response)
+        console.log(response);
       RenderTableData(response);
     })
     .then(function(){
@@ -33,7 +33,7 @@ const RenderTableData = ({data})=>{
 
     data.forEach( (cliente) =>{
                 
-        console.log(cliente)
+        console.log(cliente);
     });
     
 }
