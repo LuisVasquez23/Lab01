@@ -37,7 +37,49 @@ public class ClienteController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        String nombre = request.getParameter("nombre");
+        String direccion = request.getParameter("direccion");
+        String telefono = request.getParameter("telefono");
+        String email = request.getParameter("email");
+        
+        Cliente cliente = new Cliente();
+        
+        cliente.setNombreCliente(nombre);
+        cliente.setDireccion(direccion);
+        cliente.setTelefono(telefono);
+        cliente.setEmail(email);
+        
+        if(clienteService.AddCliente(cliente)){
+            General.sendAsJson(response, General.ObjectToJson(cliente));
+            return;
+        }
+        
+        General.sendAsJson(response, "[]");
+        return;
+       
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        String id = req.getParameter("id");
+        
+        if(id=="" || id == null){
+            General.sendAsJson(resp, "[{}]");
+            return;
+        }
+        
+        if(clienteService.DeleteCliente(Integer.parseInt(id))){
+            General.sendAsJson(resp, "[{\"id\": " + id + "}]");
+            return;
+        }else{
+            General.sendAsJson(resp, "[{}]");
+            return;
+        }
+        
+        
+    
+    }
 
+    
 }

@@ -33,6 +33,9 @@ const initDataTable = (selector, customSettings = {}) => {
         orderCellsTop: true,
         order: [],
         fixedHeader: false,
+        "language": {
+            "infoEmpty": "No hay registros",
+        },
         destroy: true,
         pageLength: 5,
         paging:'true',
