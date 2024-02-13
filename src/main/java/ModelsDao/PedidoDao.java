@@ -2,6 +2,7 @@ package ModelsDao;
 
 import Models.Pedido;
 import Persistencia.MySQLConnection;
+import Utils.GraficoViewModel;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -78,6 +79,40 @@ public class PedidoDao {
         return IsAdded;
     }
     
+    
+    
+    public boolean UpdatePedido(Pedido pedido) {
+    boolean isUpdated = false;
+
+    try {
+        MySQLConnection connection = MySQLConnection.getInstance();
+        Connection conn = connection.getConnection();
+
+        String query = "UPDATE pedidos SET id_cliente = ?, fecha = ?, total = ?, estado = ? WHERE id = ?;";
+
+        PreparedStatement statement = conn.prepareStatement(query);
+
+        statement.setInt(1, pedido.getId_cliente());
+        statement.setDate(2, (Date) pedido.getFecha());
+        statement.setFloat(3, pedido.getTotal());
+        statement.setInt(4, pedido.getEstado());
+        statement.setInt(5, pedido.getId());
+
+        int rowsAffected = statement.executeUpdate();
+
+        if (rowsAffected > 0) {
+            isUpdated = true;
+        }
+
+        statement.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return isUpdated;
+}
+
+    
     public boolean DeletePedido(int id){
         boolean isDeleted = false;
         
@@ -101,6 +136,42 @@ public class PedidoDao {
         }
         
         return isDeleted;
+    }
+    
+    
+    
+     public List<GraficoViewModel> obtenerMesesConMasPedidosPorAnio() {
+        List<GraficoViewModel> mesesConMasPedidos = new ArrayList<>();
+
+        try {
+            MySQLConnection connection = MySQLConnection.getInstance();
+            Connection conn = connection.getConnection();
+
+         
+            String sql = "SELECT YEAR(fecha) AS anio, MONTH(fecha) AS mes, COUNT(*) AS cantidad_pedidos " +
+                         "FROM pedidos " +
+                         "GROUP BY YEAR(fecha), MONTH(fecha) " +
+                         "ORDER BY anio DESC, cantidad_pedidos DESC " +
+                         "LIMIT 3;";
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                GraficoViewModel mesConMasPedidos = new GraficoViewModel();
+                mesConMasPedidos.setAnio(resultSet.getInt("anio"));
+                mesConMasPedidos.setMes(resultSet.getInt("mes"));
+                mesConMasPedidos.setCantidadCampo(resultSet.getInt("cantidad_pedidos"));
+                mesesConMasPedidos.add(mesConMasPedidos);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mesesConMasPedidos;
     }
 
     

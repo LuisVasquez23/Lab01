@@ -13,6 +13,9 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/Lab01/views/pedido">Pedidos</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="Grafica?accion=Graficas">Graficas</a>
+        </li>
       </ul>
     </div>
   </div>
