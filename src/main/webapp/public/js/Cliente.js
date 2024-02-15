@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded" , ()=>{
 });
 
 const GetClientes = () =>{
-    axios.get('/Lab01/Cliente')
+    axios.get('/lab01/Cliente')
     .then(function (response) {
       RenderTableData(response);
     })
@@ -66,7 +66,7 @@ $("#btnAdd").click(function(){
     let telefonoC = telefono.val();
     let emailC = email.val();
         
-    fetch("/Lab01/Cliente", {
+    fetch("/lab01/Cliente", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -75,6 +75,7 @@ $("#btnAdd").click(function(){
     })
     .then(response => response.json()) // Convertir la respuesta a JSON
     .then(data => {
+        
         if(data.length != 0){
             Swal.fire({
                 title: '¡Agregado!',
@@ -179,7 +180,7 @@ const DeleteCliente = (idCliente)=>{
     }).then((result) => {
       if (result.isConfirmed) {
         
-        fetch(`/Lab01/Cliente?id=${idCliente}`, {
+        fetch(`/lab01/Cliente?id=${idCliente}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'

@@ -8,10 +8,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/Lab01/views/cliente">Clientes</a>
+          <a class="nav-link active" aria-current="page" href="/lab01/views/cliente">Clientes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/Lab01/views/pedido">Pedidos</a>
+          <a class="nav-link active" aria-current="page" href="/lab01/views/pedido">Pedidos</a>
         </li>
       </ul>
     </div>
