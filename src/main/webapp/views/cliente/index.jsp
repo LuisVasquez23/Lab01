@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Practica02 - Clientes</title>
+    <title>Lab01 - Clientes</title>
     
    <jsp:include page="/layout/css.jsp" />
     
@@ -73,6 +73,46 @@
       </div>
     </div>
     
+   <!-- Update modal -->
+     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Actualizar cliente</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                 <div class="mt-2 mb-3">
+                  <input type="hidden"  name="idUpdate" id="idUpdate" required>
+                </div>
+                <div class="mt-2 mb-3">
+                  <label class="text-muted fw-bold" for="nombreCliente">Nombre </label>
+                  <input type="text" class="form-control"  name="clienteUpdate" id="clienteUpdate" required>
+                </div>
+                <div class="mt-2 mb-3">
+                    <label class="text-muted fw-bold" for="Direccion">Dirección </label>
+                    <input type="text" class="form-control"  name="direccionUpdate" id="direccionUpdate" required>
+                </div>
+                <div class="mt-2 mb-3">
+                    <label class="text-muted fw-bold" for="Telefono">Telefono </label>
+                    <input type="text" class="form-control"  name="telefonoUpdate" id="telefonoUpdate" required>
+                </div>
+                <div class="mt-2 mb-3">
+                    <label class="text-muted fw-bold" for="Email">Email </label>
+                    <input type="email" class="form-control"  name="emailUpdate" id="emailUpdate" required>
+                </div>
+                <div class="mt-2 mb-3">
+                    <button type="button" id="btnUpdate" class="btn btn-primary btn-sm">Actualizar</button>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+   
     <jsp:include page="/layout/js.jsp" />
    
     <script>

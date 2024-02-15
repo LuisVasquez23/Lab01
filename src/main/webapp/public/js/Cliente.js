@@ -1,11 +1,18 @@
 const clienteTableId = "#clienteTable";
 const clienteTable = $(clienteTableId);
+const updateModal = $("#updateModal");
 
 // Datos del cliente
 let nombreCliente = $("#nombreCliente");
 let direccion = $("#Direccion");
 let telefono = $("#Telefono");
 let email = $("#Email");
+
+let clienteUpdate = $("#clienteUpdate");
+let direccionUpdate = $("#direccionUpdate");
+let telefonoUpdate = $("#telefonoUpdate");
+let emailUpdate = $("#emailUpdate")
+let idUpdate = $("#idUpdate");
 
 document.addEventListener("DOMContentLoaded" , ()=>{
     
@@ -19,9 +26,6 @@ document.addEventListener("DOMContentLoaded" , ()=>{
 const GetClientes = () =>{
     axios.get('/lab01/Cliente')
     .then(function (response) {
-
-        console.log(response);
-
         RenderTableData(response);
     })
     .then(function(){
@@ -40,6 +44,15 @@ const RenderTableData = ({data})=>{
     $(clienteTable).DataTable().clear().draw();
 
     data.forEach( (cliente) =>{
+        
+       let clienteUpdate = {
+           id: cliente.clienteId,
+           nombre:  cliente.nombreCliente,
+           direccion: cliente.direccion,
+           telefono : cliente.telefono,
+           email : cliente.email
+       }
+        
         $(clienteTable).DataTable()
         .row.add([
             cliente.nombreCliente,
@@ -48,7 +61,7 @@ const RenderTableData = ({data})=>{
             cliente.email,
              `
                 <div class="btn-group text-center">
-                    <button class="btn btn-primary">Actualizar</button>
+                    <button class="btn btn-primary" onclick="UpdateCliente(${cliente.clienteId} ,'${cliente.nombreCliente}' , '${cliente.direccion}' , '${cliente.telefono}' ,'${cliente.email}' )">Actualizar</button>
                     <button class="btn btn-danger" onclick="DeleteCliente(${cliente.clienteId})">Eliminar</button>
                 <div>
             `
@@ -216,3 +229,70 @@ const DeleteCliente = (idCliente)=>{
       }
     });
 }
+
+function UpdateCliente(id , nombre , direccion , telefono , email) {
+    
+    idUpdate.val(id);
+    clienteUpdate.val(nombre);
+    direccionUpdate.val(direccion);
+    telefonoUpdate.val(telefono);
+    emailUpdate.val(email);
+    
+    $('#updateModal').modal('show');
+}
+
+$("#btnUpdate").click(function(){
+    
+    // Obtener los valores a enviar
+    let nombreC = clienteUpdate.val();
+    let direccionC = direccionUpdate.val();
+    let telefonoC = telefonoUpdate.val();
+    let emailC = emailUpdate.val();
+    let id = idUpdate.val();
+    
+    console.log(nombreC , direccionC , telefonoC , emailC , id)
+    
+    fetch(`/lab01/Cliente?id=${id}&nombre=${nombreC}&direccion=${direccionC}&telefono=${telefonoC}&email=${emailC}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json()) // Convertir la respuesta a JSON
+    .then(data => {
+        
+        if(data.length != 0){
+            Swal.fire({
+                title: '¡Actualizado!',
+                text: '¡El cliente se actualizo correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Cerrar'
+            });
+            return;
+        }
+         Swal.fire({
+            title: '¡Error!',
+            text: '¡No se pudo actualizar el cliente!',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        });
+        
+    })
+    .then(function(){
+        GetClientes();
+        
+        clienteUpdate.val("");
+        direccionUpdate.val("");
+        telefonoUpdate.val("");
+        emailUpdate.val("");
+        idUpdate.val("");
+        
+        $('#updateModal').modal('hide');
+    })
+    .catch(error => {
+        console.error('Error al realizar la solicitud:', error); // Manejar errores
+    });
+    
+    hiddeLoader();
+    
+});

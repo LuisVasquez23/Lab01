@@ -81,5 +81,39 @@ public class ClienteController extends HttpServlet {
     
     }
 
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        try {
+            
+            String nombre = request.getParameter("nombre");
+            String direccion = request.getParameter("direccion");
+            String telefono = request.getParameter("telefono");
+            String email = request.getParameter("email");
+            String id = request.getParameter("id");
+
+            Cliente cliente = new Cliente();
+            cliente.setClienteId(Integer.parseInt(id));
+            cliente.setNombreCliente(nombre);
+            cliente.setDireccion(direccion);
+            cliente.setTelefono(telefono);
+            cliente.setEmail(email);
+
+            if(clienteService.UpdateCliente(cliente)){
+                General.sendAsJson(response, General.ObjectToJson(cliente));
+                return;
+            }
+
+            General.sendAsJson(response, "[]");
+            return;
+        } catch (Exception e) {
+            General.sendAsJson(response, "[]");
+            return;
+        } 
+       
+        
+    }
+    
+    
     
 }

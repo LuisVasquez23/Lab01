@@ -104,7 +104,6 @@ public class ClienteDao {
         return isDeleted;
     }
     
-    
     public List<GraficoViewModel> obtenerClientesConMasPedidos() {
         List<GraficoViewModel> clientesConMasPedidos = new ArrayList<>();
 
@@ -138,5 +137,37 @@ public class ClienteDao {
         }
 
         return clientesConMasPedidos;
+    }
+    
+    public boolean UpdateCliente(Cliente cliente){
+        
+        boolean IsUpdated = false;
+    
+        try {
+            
+            MySQLConnection connection = MySQLConnection.getInstance();
+            Connection conn = connection.getConnection();
+            
+            String query = "UPDATE `clientes` SET `nombre` = ?, `direccion` = ?, `telefono` = ?, `email` = ? WHERE `id` = ?";
+
+            PreparedStatement statement = conn.prepareStatement(query);
+            
+            statement.setString(1, cliente.getNombreCliente());
+            statement.setString(2, cliente.getDireccion());
+            statement.setString(3, cliente.getTelefono());
+            statement.setString(4, cliente.getEmail());
+            statement.setInt(5, cliente.getClienteId());
+            
+            int rowsAffected = statement.executeUpdate();
+            
+            if(rowsAffected > 0){
+                IsUpdated = true;
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return IsUpdated;
     }
 }
