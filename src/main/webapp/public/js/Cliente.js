@@ -102,6 +102,7 @@ $("#btnAdd").click(function(){
             });
             return;
         }
+        
          Swal.fire({
             title: '¡Error!',
             text: '¡Cliente duplicado!',
@@ -205,7 +206,8 @@ const DeleteCliente = (idCliente)=>{
     })
     .then(response => response.json()) 
     .then(data => {
-        if(data.length != 0){
+            console.log(data.length)
+            if(data.length != 0){
              Swal.fire(
                 '¡Eliminado!',
                 'El registro ha sido eliminado.',
@@ -213,6 +215,13 @@ const DeleteCliente = (idCliente)=>{
               );
                 return;
             }
+            
+            Swal.fire({
+                title: '¡Error!',
+                text: '¡No se puede eliminar el cliente!',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+            });
 
         })
         .then(function(){

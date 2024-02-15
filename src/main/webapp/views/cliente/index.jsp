@@ -55,7 +55,7 @@
                   </div>
                   <div class="mt-2 mb-3">
                       <label class="text-muted fw-bold" for="Telefono">Telefono </label>
-                      <input type="text" class="form-control" placeholder="Telefono" name="Telefono" id="Telefono" required>
+                      <input type="text" class="form-control" pattern="\d{4}-\d{4}" placeholder="Telefono" name="Telefono" id="Telefono" required>
                   </div>
                   <div class="mt-2 mb-3">
                       <label class="text-muted fw-bold" for="Email">Email </label>

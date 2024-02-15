@@ -94,6 +94,41 @@ public class PedidoController extends HttpServlet {
     
     }
 
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        try {
+            String idCliente = request.getParameter("idCliente");
+            String fechaString = request.getParameter("fecha");
+            String total = request.getParameter("total");
+            String estado = request.getParameter("estado");
+            String id = request.getParameter("id");
+
+            Pedido pedido = new Pedido();
+
+            pedido.setId_cliente(Integer.parseInt(idCliente));
+
+            pedido.setId(Integer.parseInt(id));
+            pedido.setFecha(fechaString);
+            pedido.setTotal(Float.parseFloat(total));
+            pedido.setEstado(Integer.parseInt(estado));
+
+            if(pedidoService.UpdatePedido(pedido)){
+                General.sendAsJson(response, General.ObjectToJson(pedido));
+                return;
+            }
+        
+            General.sendAsJson(response, "[]");
+            return;
+        } catch (Exception e) {
+            General.sendAsJson(response, "[]");
+            return;
+        }
+
+    }
+    
+    
+
 
   
 

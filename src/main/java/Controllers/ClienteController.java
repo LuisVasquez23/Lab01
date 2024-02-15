@@ -62,18 +62,23 @@ public class ClienteController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
-        String id = req.getParameter("id");
+        try{
+            String id = req.getParameter("id");
         
-        if(id=="" || id == null){
-            General.sendAsJson(resp, "[{}]");
-            return;
-        }
-        
-        if(clienteService.DeleteCliente(Integer.parseInt(id))){
-            General.sendAsJson(resp, "[{\"id\": " + id + "}]");
-            return;
-        }else{
-            General.sendAsJson(resp, "[{}]");
+            if(id=="" || id == null){
+                General.sendAsJson(resp, "[{}]");
+                return;
+            }
+
+            if(clienteService.DeleteCliente(Integer.parseInt(id))){
+                General.sendAsJson(resp, "[{\"id\": " + id + "}]");
+                return;
+            }else{
+                General.sendAsJson(resp, "[]");
+                return;
+            }
+        }catch(Exception e){
+            General.sendAsJson(resp, "[]");
             return;
         }
         

@@ -10,7 +10,7 @@ let clientesUpdate = $("#clientesUpdate");
 let fechaUpdate = $("#fechaUpdate");
 let totalUpdate = $("#totalUpdate");
 let estadoUpdate = $("#estadoUpdate");
-let idUpdate = $("#estadoUpdate");
+let idUpdate = $("#id");
 
 
 document.addEventListener("DOMContentLoaded" , ()=>{
@@ -109,8 +109,8 @@ $("#btnAdd").click(function(){
         GetPedidos();
         $('#addModal').modal('hide');
         
-        $("#clientes").val("").trigger();
-        $("#estado").val("").trigger();
+        $("#clientes").val("").trigger('change');
+        $("#estado").val("").trigger('change');
         $("#fecha").val("");
         $("#total").val("");
         
@@ -180,7 +180,7 @@ const DeletePedido = (idPedido)=>{
 
         })
         .then(function(){
-            GetPedidos()();
+            GetPedidos();
         })
         .catch(error => {
             console.error('Error al realizar la solicitud:', error); // Manejar errores
@@ -194,8 +194,7 @@ const DeletePedido = (idPedido)=>{
 }
 
 function UpdatePedido(id , idCliente , fecha , total , estado) {
-    console.log(id, idCliente , fecha, total , estado);
-    
+ 
     idUpdate.val(id);
     fechaUpdate.val(fecha)
     estadoUpdate.val(estado);
@@ -232,3 +231,58 @@ function initSelect2 (id ){
 });
     
 }
+
+$("#btnUpdate").click(function(){
+    
+    // Obtener los valores a enviar
+    let idCliente = clientesUpdate.val();
+    let fecha = fechaUpdate.val();
+    let total = totalUpdate.val();
+    let estado = estadoUpdate.val();
+    let id = idUpdate.val();
+    
+    
+    fetch(`/lab01/Pedido?id=${id}&idCliente=${idCliente}&fecha=${fecha}&total=${total}&estado=${estado}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json()) // Convertir la respuesta a JSON
+    .then(data => {
+        
+        if(data.length != 0){
+            Swal.fire({
+                title: '¡Actualizado!',
+                text: '¡El pedido se actualizo correctamente!',
+                icon: 'success',
+                confirmButtonText: 'Cerrar'
+            });
+            return;
+        }
+         Swal.fire({
+            title: '¡Error!',
+            text: '¡No se pudo actualizar el pedido!',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        });
+        
+    })
+    .then(function(){
+        GetPedidos();
+        
+        clientesUpdate.val("");
+        fechaUpdate.val("");
+        totalUpdate.val("");
+        estadoUpdate.val("");
+        idUpdate.val("");
+        
+        $('#updateModal').modal('hide');
+    })
+    .catch(error => {
+        console.error('Error al realizar la solicitud:', error); // Manejar errores
+    });
+    
+    hiddeLoader();
+    
+});
