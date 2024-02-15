@@ -20,7 +20,7 @@ public class PedidoDao {
             MySQLConnection connection = MySQLConnection.getInstance();
             Connection conn = connection.getConnection();
 
-            String query = "SELECT * FROM pedidos;";
+            String query = "SELECT p.id , c.nombre , p.fecha , p.total , p.estado , p.id_cliente FROM pedidos p JOIN clientes c ON p.id_cliente = c.id ;";
 
             PreparedStatement statement = conn.prepareStatement(query);
 
@@ -30,8 +30,9 @@ public class PedidoDao {
                 Pedido pedido = new Pedido();
 
                 pedido.setId(resultSet.getInt("id"));
+                pedido.setNombreCliente(resultSet.getString("nombre"));
                 pedido.setId_cliente(resultSet.getInt("id_cliente"));
-                pedido.setFecha(resultSet.getDate("fecha"));
+                pedido.setFecha(resultSet.getString("fecha"));
                 pedido.setTotal(resultSet.getFloat("total"));
                 pedido.setEstado(resultSet.getInt("estado"));
 
@@ -62,7 +63,7 @@ public class PedidoDao {
             PreparedStatement statement = conn.prepareStatement(query);
             
             statement.setInt(1, pedido.getId_cliente());
-            statement.setDate(2, (Date) pedido.getFecha());
+            statement.setString(2,  pedido.getFecha());
             statement.setFloat(3, pedido.getTotal());
             statement.setInt(4, pedido.getEstado());
             
@@ -93,7 +94,7 @@ public class PedidoDao {
         PreparedStatement statement = conn.prepareStatement(query);
 
         statement.setInt(1, pedido.getId_cliente());
-        statement.setDate(2, (Date) pedido.getFecha());
+        statement.setString(2, pedido.getFecha());
         statement.setFloat(3, pedido.getTotal());
         statement.setInt(4, pedido.getEstado());
         statement.setInt(5, pedido.getId());

@@ -1,12 +1,12 @@
 package Models;
 
-import java.util.Date;
-
 
 public class Pedido {
+    
     private int id;
     private int id_cliente;
-    private Date fecha;
+    private String nombreCliente;
+    private String fecha;
     private float total;
     private int estado;
     
@@ -14,17 +14,23 @@ public class Pedido {
         
     } 
 
-    public Pedido(int id, int id_cliente, Date fecha, float total, int estado) {
+    public Pedido(int id, int id_cliente, String fecha, float total, int estado, String nombreCliente) {
         this.id = id;
         this.id_cliente = id_cliente;
         this.fecha = fecha;
         this.total = total;
         this.estado = estado;
+        this.nombreCliente = nombreCliente;
     }
 
     public int getId() {
         return id;
     }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+    
 
     public void setId(int id) {
         this.id = id;
@@ -38,11 +44,11 @@ public class Pedido {
         this.id_cliente = id_cliente;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -61,6 +67,11 @@ public class Pedido {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+    
     
     
 }

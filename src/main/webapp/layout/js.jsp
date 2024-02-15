@@ -19,11 +19,14 @@
         integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" 
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         
-<script src="http://localhost:8080/Lab01/public/js/index.js"></script>
+<script src="http://localhost:8080/lab01/public/js/index.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     

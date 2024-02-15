@@ -1,11 +1,10 @@
-const pedidoTableId = "#pedidoTable";
-const pedidoTable = $(pedidoTableId);
-
-// Datos del pedido
-let nombreCliente = $("#cliente");
+const pedidoTablaId = "#pedidoTabla";
+const pedidoTabla = $(pedidoTablaId);
+let clienteId = $("#clientes");
 let fecha = $("#fecha");
 let total = $("#total");
 let estado = $("#estado");
+
 
 document.addEventListener("DOMContentLoaded" , ()=>{
     
@@ -16,67 +15,75 @@ document.addEventListener("DOMContentLoaded" , ()=>{
     GetPedidos();
 });
 
-const GetPedidos = () => {
-    axios.get('/Lab01/Pedido')
+const GetPedidos = () =>{
+    axios.get('/lab01/Pedido')
     .then(function (response) {
-        RenderTableData(response.data);
+
+        RenderTableData(response);
+
     })
     .then(function(){
-        setTimeout(() => {
-         
-        }, 1000);
+         setTimeout(()=>{
+            hiddeLoader();
+        },1000);
     })
     .catch(function (error) {
-        console.log(error);
+      console.log(error);
     });
+    
 }
 
-const RenderTableData = (data) => {
-    $(pedidoTable).DataTable().clear().draw();
+const RenderTableData = ({data})=>{
+    
+    $(pedidoTabla).DataTable().clear().draw();
+    
 
-    data.forEach((pedido) => {
-        $(pedidoTable).DataTable()
+    data.forEach( (pedido) =>{
+        
+        let dateString =  pedido.fecha;
+        let dateObj = new Date(dateString);
+        
+        let formattedDate = dateObj.toLocaleDateString('en-US', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            separator: '/'
+          });
+        
+        $(pedidoTabla).DataTable()
         .row.add([
-            pedido.id_cliente,
-            pedido.fecha,
-            pedido.total,
-            pedido.estado,
-            `
-            <div class="btn-group text-center">
-                <button class="btn btn-primary">Actualizar</button>
-                <button class="btn btn-danger" onclick="DeletePedido(${pedido.id})">Eliminar</button>
-            </div>
+            pedido.nombreCliente,
+            formattedDate,
+            `$ ${pedido.total.toFixed(2)}`,
+            getBadgeHtml(pedido.estado),
+             `
+                <div class="btn-group text-center">
+                    <button class="btn btn-primary">Actualizar</button>
+                    <button class="btn btn-danger" onclick="DeletePedido(${pedido.id})">Eliminar</button>
+                <div>
             `
         ]).draw();
-    });
-}
 
+    });
+    
+}
 
 $("#btnAdd").click(function(){
     
-    if(!ValidateInputs()){
-        return;
-    }
-    
-    // Obtener los valores a enviar
-    let nombreC = nombreCliente.val();
-    let fechaC = fecha.val();
-    let totalC = total.val();
-    let estadoC = estado.val();
-        
-    fetch("/Lab01/Pedido", {
+    fetch("/lab01/Pedido", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `nombre=${nombreC}&fecha=${fechaC}&total=${totalC}&estado=${estadoC}`
+        body: `cliente=${clienteId.val()}&fecha=${fecha.val()}&total=${total.val()}&estado=${estado.val()}`
     })
     .then(response => response.json()) // Convertir la respuesta a JSON
     .then(data => {
+        
         if(data.length != 0){
             Swal.fire({
-                title: '¡Agregado!',
-                text: '¡El pedido se agrego correctamente!',
+                title: '¡Pedido!',
+                text: '¡El Pedido se agrego correctamente!',
                 icon: 'success',
                 confirmButtonText: 'Cerrar'
             });
@@ -91,49 +98,25 @@ $("#btnAdd").click(function(){
         
     })
     .then(function(){
+        
         GetPedidos();
-        
-        nombreCliente.val("");
-        fecha.val("");
-        total.val("");
-        estado.val("");
-        
         $('#addModal').modal('hide');
+        
+        $("#clientes").val("").trigger();
+        $("#estado").val("").trigger();
+        $("#fecha").val("");
+        $("#total").val("");
+        
+        
     })
     .catch(error => {
         console.error('Error al realizar la solicitud:', error); // Manejar errores
     });
     
+    
     hiddeLoader();
     
 });
-
-const ValidateInputs = () =>{
-    
-    let valido = false;
-    
-    if(nombreCliente.val() == ""){
-        showAlert("El nombre esta vacio","Cuidado","warning");
-        return valido;
-    }
-    
-    if(fecha.val() == ""){
-        showAlert("La fecha esta vacia","Cuidado","warning");
-        return valido;
-    }
-    
-    if(total.val() == ""){
-        showAlert("El total esta vacio","Cuidado","warning");
-        return valido;
-    }
-    
-    if(estado.val() == ""){
-        showAlert("El estado esta vacio","Cuidado","warning");
-        return valido;
-    }
-    
-    return true;
-}
 
 function showAlert(message,title, type) {
     Swal.fire({
@@ -146,17 +129,16 @@ function showAlert(message,title, type) {
     });
 }
 
-function validarTelefono(telefono) {
-    
-    // Eliminamos espacios en blanco y guiones si están presentes
-    var telefonoSinFormato = telefono.replace(/\s/g, "").replace(/-/g, "");
-    
-    // Verificamos si el número de teléfono tiene exactamente 8 dígitos
-    if (telefonoSinFormato.length === 8 && !isNaN(telefonoSinFormato)) {
-        return true;
-    } else {
-        return false;
-    }
+function getBadgeHtml(estado) {
+  let badgeHtml = '';
+
+  if (estado === 0) {
+    badgeHtml = '<span class="badge badge-success text-success">Entregado</span>';
+  } else if (estado === 1) {
+    badgeHtml = '<span class="badge badge-warning text-warning">En espera</span>';
+  } 
+
+  return badgeHtml;
 }
 
 const DeletePedido = (idPedido)=>{
@@ -172,7 +154,7 @@ const DeletePedido = (idPedido)=>{
     }).then((result) => {
       if (result.isConfirmed) {
         
-        fetch(`/Lab01/Pedido?id=${idPedido}`, {
+        fetch(`/lab01/Pedido?id=${idPedido}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -191,8 +173,7 @@ const DeletePedido = (idPedido)=>{
 
         })
         .then(function(){
-            GetPedidos();
-            $('#addModal').modal('hide');
+            GetPedidos()();
         })
         .catch(error => {
             console.error('Error al realizar la solicitud:', error); // Manejar errores

@@ -22,7 +22,7 @@ const GetClientes = () =>{
 
         console.log(response);
 
-      RenderTableData(response);
+        RenderTableData(response);
     })
     .then(function(){
          setTimeout(()=>{
@@ -40,10 +40,6 @@ const RenderTableData = ({data})=>{
     $(clienteTable).DataTable().clear().draw();
 
     data.forEach( (cliente) =>{
-
-                
-        console.log(cliente);
-
         $(clienteTable).DataTable()
         .row.add([
             cliente.nombreCliente,

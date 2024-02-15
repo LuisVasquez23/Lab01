@@ -36,7 +36,7 @@ public class PedidoController extends HttpServlet {
          
         List<Pedido> pedidos = pedidoService.ListPedidos();
         
-       General.sendAsJson(response, General.ObjectToJson(pedidos));
+        General.sendAsJson(response, General.ObjectToJson(pedidos));
 
         return;
         
@@ -47,28 +47,17 @@ public class PedidoController extends HttpServlet {
             throws ServletException, IOException {
         
         
-        String nombre = request.getParameter("cliente");
+        String idCliente = request.getParameter("cliente");
         String fechaString = request.getParameter("fecha");
         String total = request.getParameter("total");
         String estado = request.getParameter("estado");
         
         Pedido pedido = new Pedido();
        
-        pedido.setId_cliente(Integer.parseInt(nombre));
-        
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date fecha = null;
-        try {
-            fecha = dateFormat.parse(fechaString);
-        } catch (ParseException e) {
-            
-            e.printStackTrace(); 
-        }
+        pedido.setId_cliente(Integer.parseInt(idCliente));
 
         
-        pedido.setFecha(fecha);
-
-  
+        pedido.setFecha(fechaString);
         pedido.setTotal(Float.parseFloat(total));
         pedido.setEstado(Integer.parseInt(estado));
         
