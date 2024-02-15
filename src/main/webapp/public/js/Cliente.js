@@ -19,6 +19,9 @@ document.addEventListener("DOMContentLoaded" , ()=>{
 const GetClientes = () =>{
     axios.get('/lab01/Cliente')
     .then(function (response) {
+
+        console.log(response);
+
       RenderTableData(response);
     })
     .then(function(){
@@ -37,6 +40,10 @@ const RenderTableData = ({data})=>{
     $(clienteTable).DataTable().clear().draw();
 
     data.forEach( (cliente) =>{
+
+                
+        console.log(cliente);
+
         $(clienteTable).DataTable()
         .row.add([
             cliente.nombreCliente,
@@ -50,6 +57,7 @@ const RenderTableData = ({data})=>{
                 <div>
             `
         ]).draw();
+
     });
     
 }

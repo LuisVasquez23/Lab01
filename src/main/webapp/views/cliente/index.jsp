@@ -80,6 +80,5 @@
     </script>
     
     <script src="../../public/js/Cliente.js" type="text/javascript"></script>
-    
   </body>
 </html>

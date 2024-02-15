@@ -19,7 +19,7 @@
             Agregar
         </button>
         <div class="table-responsive">
-            <table class="table table-striped table-bordered text-nowrap" id="institutoTable">
+            <table class="table table-striped table-bordered text-nowrap" id="pedidoTable">
                 <thead>
                     <tr>
                         <th>Cliente</th>
@@ -41,15 +41,36 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar instituto</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar pedido</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-              <form action="/practica02/Instituto" method="POST" >
+              <form action="/Lab01/Pedido" method="POST" >
                   <div class="mt-2 mb-3">
-                      <label class="text-muted fw-bold" for="nombreInstituto">Nombre </label>
-                      <input type="text" class="form-control" placeholder="Nombre del instituto" name="nombreInstituto" id="nombreInstituto" required>
-                  </div>
+                        <label class="text-muted fw-bold" for="cliente">Cliente</label>
+                        <select class="form-control" name="cliente" id="cliente" required>
+                           
+                         
+                          
+                        </select>
+                    </div>
+                    <div class="mt-2 mb-3">
+                        <label class="text-muted fw-bold" for="fecha">Fecha</label>
+                        <input type="date" class="form-control" name="fecha" id="fecha" required>
+                    </div>
+                    <div class="mt-2 mb-3">
+                        <label class="text-muted fw-bold" for="total">Total</label>
+                        <input type="number" class="form-control" placeholder="Total" name="total" id="total" required>
+                    </div>
+                    <div class="mt-2 mb-3">
+                        <label class="text-muted fw-bold" for="estado">Estado</label>
+                        <select class="form-control" name="estado" id="estado" required>
+                          
+                            <option value="1">Pendiente</option>
+                            <option value="2">Pagado</option>
+                            <option value="3">Cancelado</option>
+                        </select>
+                    </div>
                   <div class="mt-2 mb-3">
                       <button type="button" id="btnAdd" class="btn btn-primary btn-sm">Agregar</button>
                   </div>
@@ -63,10 +84,9 @@
     </div>
     
     <jsp:include page="/layout/js.jsp" />
-   
     <script src="../../public/js/Pedido.js" type="text/javascript"></script>
     <script>
-        initDataTable("#institutoTable", {"columns": [
+        initDataTable("#pedidoTable", {"columns": [
         { "width": "90%" }, // Columna para el nombre del instituto
         { "width": "10%" } // Columna para los botones
     ]});

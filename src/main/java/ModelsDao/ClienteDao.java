@@ -2,6 +2,7 @@ package ModelsDao;
 
 import Models.Cliente;
 import Persistencia.MySQLConnection;
+import Utils.GraficoViewModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -101,5 +102,41 @@ public class ClienteDao {
         }
         
         return isDeleted;
+    }
+    
+    
+    public List<GraficoViewModel> obtenerClientesConMasPedidos() {
+        List<GraficoViewModel> clientesConMasPedidos = new ArrayList<>();
+
+        try {
+            MySQLConnection connection = MySQLConnection.getInstance();
+            Connection conn = connection.getConnection();
+
+            String sql = "SELECT c.nombre AS nombre_cliente, COUNT(*) AS cantidad_pedidos " +
+                         "FROM clientes c " +
+                         "INNER JOIN pedidos p ON c.id = p.id_cliente " +
+                         "GROUP BY c.nombre " +
+                         "ORDER BY cantidad_pedidos DESC " +
+                         "LIMIT 10;";
+
+            PreparedStatement statement = conn.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String nombreCliente = resultSet.getString("nombre_cliente");
+                int cantidadPedidos = resultSet.getInt("cantidad_pedidos");
+                
+                
+                GraficoViewModel clienteConMasPedidos = new GraficoViewModel(nombreCliente, cantidadPedidos);
+                clientesConMasPedidos.add(clienteConMasPedidos);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return clientesConMasPedidos;
     }
 }
