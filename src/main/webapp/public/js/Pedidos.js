@@ -1,9 +1,16 @@
 const pedidoTablaId = "#pedidoTabla";
 const pedidoTabla = $(pedidoTablaId);
+
 let clienteId = $("#clientes");
 let fecha = $("#fecha");
 let total = $("#total");
 let estado = $("#estado");
+
+let clientesUpdate = $("#clientesUpdate");
+let fechaUpdate = $("#fechaUpdate");
+let totalUpdate = $("#totalUpdate");
+let estadoUpdate = $("#estadoUpdate");
+let idUpdate = $("#estadoUpdate");
 
 
 document.addEventListener("DOMContentLoaded" , ()=>{
@@ -58,7 +65,7 @@ const RenderTableData = ({data})=>{
             getBadgeHtml(pedido.estado),
              `
                 <div class="btn-group text-center">
-                    <button class="btn btn-primary">Actualizar</button>
+                    <button class="btn btn-primary" onclick="UpdatePedido(${pedido.id} ,'${pedido.id_cliente}' , '${pedido.fecha}' , '${pedido.total}' ,'${pedido.estado}' )">Actualizar</button>
                     <button class="btn btn-danger" onclick="DeletePedido(${pedido.id})">Eliminar</button>
                 <div>
             `
@@ -184,4 +191,44 @@ const DeletePedido = (idPedido)=>{
         
       }
     });
+}
+
+function UpdatePedido(id , idCliente , fecha , total , estado) {
+    console.log(id, idCliente , fecha, total , estado);
+    
+    idUpdate.val(id);
+    fechaUpdate.val(fecha)
+    estadoUpdate.val(estado);
+    totalUpdate.val(total);
+    initSelect2(idCliente);
+    
+    $('#updateModal').modal('show');
+    
+    
+}
+
+function initSelect2 (id ){
+    $.ajax({
+    url: '/lab01/Cliente',
+    dataType: 'json',
+    success: function(data) {
+        // Formatea los datos en el formato requerido por select2
+        var formattedData = data.map(function(item) {
+            return {
+                id: item.clienteId,
+                text: item.nombreCliente
+            };
+        });
+
+        // Inicializa select2 y pasa los datos formateados
+        $("#clientesUpdate").select2({
+            dropdownParent: $("#updateModal"),
+            data: formattedData // Pasa los datos ya formateados
+        });
+
+        // Establece el valor predeterminado seleccionado
+        $("#clientesUpdate").val(id).trigger('change');
+    }
+});
+    
 }
